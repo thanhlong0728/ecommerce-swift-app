@@ -1,5 +1,5 @@
 //
-//  HomeViewModel.swift
+//  ProductGridViewModel.swift
 //  Ecommerce
 //
 //  Created by Mac on 25/03/2025.
@@ -9,12 +9,11 @@ import Foundation
 import SwiftUI
 
 @Observable
-class HomeViewModel {
-    var showAllProduct = false
+class ProductGridViewModel {
     
-    var featuredProducts = ProductsClient.fetchProducts().filter({$0.isFeatured})
+    let filter: ProductFilter
     
-    func fetProducts(filter: ProductFilter) -> [Product] {
+    var products: [Product] {
         switch filter {
         case .all:
             ProductsClient.fetchProducts()
@@ -23,5 +22,9 @@ class HomeViewModel {
         case .highlyRated:
             ProductsClient.fetchProducts().filter({$0.rating > 4})
         }
+    }
+    
+    init(filter: ProductFilter) {
+        self.filter = filter
     }
 }

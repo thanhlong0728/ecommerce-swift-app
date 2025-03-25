@@ -40,35 +40,71 @@ struct HomeView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            VStack{
-                NavigationBarView
-                Image("banner")
-                    .bannerImageStyle()
-                HStack{
-                    Text("Featured")
-                        .font(.system(size: 15, weight: .semibold))
-                        .padding(.leading)
-                    Spacer()
-                    
-                    NavigationLink {
-                        ProductGridView()
-                    }label: {
-                        Text("View All")
-                            .font(.system(size: 15,weight: .bold))
-                        .padding(.trailing)
-                    }
-                }
-                .padding(.top)
-                ScrollView(.horizontal, showsIndicators: false){
+        NavigationStack  {
+            ScrollView {
+                VStack{
+                    NavigationBarView
+                    Image("banner")
+                        .bannerImageStyle()
                     HStack{
-                        ForEach(viewModel.featuredProducts){
-                            product in
-                            ProductRow(product: product)
-                        }}
+                        Text("Featured")
+                            .font(.system(size: 15, weight: .semibold))
+                            .padding(.leading)
+                        Spacer()
+                        
+                        NavigationLink {
+                            ProductGridView(filter: .isFeatured)
+                        }label: {
+                            Text("View All")
+                                .font(.system(size: 15,weight: .bold))
+                            .padding(.trailing)
+                        }
+                    }
+                    .padding(.top)
+                    ScrollView(.horizontal, showsIndicators: false){
+                        HStack{
+                            ForEach(viewModel.fetProducts(filter: .isFeatured)){
+                                product in
+                                ProductRow(product: product)
+                            }}
+                    }
+                    .padding(.leading,5)
+                    HStack{
+                        Text("Highly Rated")
+                            .font(.system(size: 15, weight: .semibold))
+                            .padding(.leading)
+                        Spacer()
+                        NavigationLink {
+                            ProductGridView(filter: .highlyRated)
+                        }label: {
+                            Text("View All")
+                                .font(.system(size: 15,weight: .bold))
+                            .padding(.trailing)
+                        }
+                    }
+                    .padding(.top)
+                    ScrollView(.horizontal, showsIndicators: false){
+                        HStack{
+                            ForEach(viewModel.fetProducts(filter: .highlyRated)){
+                                product in
+                                ProductRow(product: product)
+                            }}
+                    }
+                    .padding(.leading,5)
+                    Button(action: {
+                        viewModel.showAllProduct = true
+                    }, label: {
+                        Text("See Full Catalog")
+                         
+                    })
+                    .buttonStyle(PrimaryButtonStyle())
+                    .padding(.horizontal)
+                    .padding(.top,15)
+                    Spacer()
                 }
-                .padding(.leading,5)
-                Spacer()
+            }
+            .navigationDestination(isPresented: $viewModel.showAllProduct){
+                ProductGridView(filter: .all)
             }
         }
     }

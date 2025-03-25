@@ -13,7 +13,7 @@ extension Image{
          self
             .resizable()
             .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-            .frame(height: 250)
+            .frame(width: UIScreen.main.bounds.width,height: 250)
     }
 }
 
