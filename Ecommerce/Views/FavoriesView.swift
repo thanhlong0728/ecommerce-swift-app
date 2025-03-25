@@ -8,11 +8,47 @@
 import SwiftUI
 
 struct FavoriesView: View {
+    
+    @Environment(FavoriesManager.self) var favoriesManager : FavoriesManager
+    
+    fileprivate func FavoriteProductRow(product: Product) -> some View {
+        HStack {
+            Image(product.image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 70, height: 70)
+            VStack(alignment: .leading) {
+                Text(product.title)
+                    .font(.system(size: 15, weight: .semibold))
+                    .padding(.bottom,1)
+                Text(product.description)
+                    .lineLimit(/*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
+                    .font(.system(size: 15))
+            }
+            Button(action: {
+                favoriesManager.products.removeAll(where: { $0.id == product.id })
+            }, label: {
+                Image(systemName: "heart.fill")
+            })
+        }
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            List(favoriesManager.products) {
+                product in
+                FavoriteProductRow(product: product)
+            }
+        }
+        .overlay {
+            if favoriesManager.products.count == 0 {
+                Text("Nothing to see here")
+            }
+        }
     }
 }
 
 #Preview {
     FavoriesView()
+        .environment(FavoriesManager())
 }
