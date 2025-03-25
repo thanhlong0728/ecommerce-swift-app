@@ -13,7 +13,7 @@ struct ProductRow: View {
     
     var body: some View {
         NavigationLink {
-     
+            ProductDetailView(product: product)
         } label: {
             VStack(alignment: .leading, spacing: 5) {
                 Image(product.image)
@@ -25,9 +25,11 @@ struct ProductRow: View {
                 Group {
                     Text(product.title)
                         .lineLimit(1)
+                        .foregroundColor(.black)
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundStyle(Color.primary)
                     Text("\(product.displayPrice)")
+                        .foregroundColor(.black)
                         .font(.system(size: 15))
                         .foregroundStyle(Color.primary)
                     HStack {
@@ -35,6 +37,7 @@ struct ProductRow: View {
                             .font(.system(size: 14))
                             .foregroundStyle(Color.yellow)
                         Text("\(product.displayRating)")
+                            .foregroundColor(.black)
                             .font(.system(size: 14))
                             .foregroundStyle(Color.primary)
                     }
@@ -61,5 +64,7 @@ struct ProductRow: View {
 }
 
 #Preview {
-    ProductRow(product: ProductsClient.fetchProducts()[0])
+    NavigationStack {
+        ProductRow(product: ProductsClient.fetchProducts()[0])
+    }
 }
