@@ -16,10 +16,11 @@ struct Product: Identifiable, Decodable {
     let image: String
     let isFeatured: Bool
     var displayPrice: String {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .currency
-        let price = numberFormatter.string(from: price as NSNumber)
-        return price ?? "$0.00"
+//        let numberFormatter = NumberFormatter()
+//        numberFormatter.numberStyle = .currency
+//        let price = numberFormatter.string(from: price as NSNumber)
+//        return price ?? "$0.00"
+        return  "$\(price)"
     }
     var displayRating: String {
         let numberFormatter = NumberFormatter()
