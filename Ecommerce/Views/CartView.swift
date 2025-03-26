@@ -22,9 +22,9 @@ struct CartView: View {
                 Text(productInCart.product.displayPrice)
                     .font(.system(size: 15))
                 Stepper("Quantity \(productInCart.quantity)"){
-                    
+                    cartManager.addToCart(product: productInCart.product)
                 } onDecrement:{
-                    
+                    cartManager.removeFromCart(product: productInCart.product)
                 }
             }
         }
@@ -36,6 +36,18 @@ struct CartView: View {
                 ForEach(cartManager.productsInCart) { productInCart in
                     CartRow(productInCart: productInCart)
                 }
+            }
+            VStack {
+                Divider()
+                HStack {
+                    Text("Total: \(cartManager.displayTotalCartQuantity) items")
+                        .font(.system(size: 16))
+                    Spacer()
+                    Text(cartManager.displayTotalCartPrice)
+                        .font(.system(size: 16, weight: .bold))
+                }
+                .padding(.horizontal)
+                .padding(.vertical,30)
             }
         }
     }
