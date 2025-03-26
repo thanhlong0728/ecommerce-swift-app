@@ -14,9 +14,7 @@ struct FavoriesView: View {
     fileprivate func FavoriteProductRow(product: Product) -> some View {
         HStack {
             Image(product.image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 70, height: 70)
+                .squareImageStyle()
             VStack(alignment: .leading) {
                 Text(product.title)
                     .font(.system(size: 15, weight: .semibold))
