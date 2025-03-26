@@ -14,14 +14,14 @@ class HomeViewModel {
     
     var featuredProducts = ProductsClient.fetchProducts().filter({$0.isFeatured})
     
-    func fetProducts(filter: ProductFilter) -> [Product] {
+    func fetchProducts(filter: ProductFilter) -> [Product] {
         switch filter {
         case .all:
-            ProductsClient.fetchProducts()
+            return ProductsClient.fetchProducts()
         case .isFeatured:
-            ProductsClient.fetchProducts().filter({$0.isFeatured})
+            return ProductsClient.fetchProducts().filter({ $0.isFeatured })
         case .highlyRated:
-            ProductsClient.fetchProducts().filter({$0.rating > 4})
+            return ProductsClient.fetchProducts().filter({ $0.rating > 4 })
         }
     }
 }

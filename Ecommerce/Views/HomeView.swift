@@ -10,6 +10,8 @@ import SwiftUI
 struct HomeView: View {
     
     @State var viewModel = HomeViewModel()
+    @Environment(CartManager.self) var cartManager: CartManager
+    @Environment(TabManager.self) var tabManager: TabManager
     
     fileprivate var NavigationBarView: some View{
         HStack{
@@ -20,18 +22,20 @@ struct HomeView: View {
         }
         .overlay(alignment: .trailing) {
             Button(action: {
-                
+                tabManager.selectedTab = 2
             }, label: {
                 ZStack{
                     Image(systemName: "cart.fill")
                         .foregroundColor(.black)
-                    ZStack{
-                        Circle()
-                        Text("1")
-                            .foregroundStyle(.white)
-                            .font(.system(size: 14))
+                    if cartManager.productsInCart.count > 0 {
+                        ZStack{
+                            Circle()
+                            Text("\(cartManager.displayTotalCartQuantity)")
+                                .foregroundStyle(.white)
+                                .font(.system(size: 14))
+                        }
+                        .offset(CGSize(width: 10, height: -10))
                     }
-                    .offset(CGSize(width: 10, height: -10))
                 }
                
             })
@@ -61,14 +65,14 @@ struct HomeView: View {
                         }
                     }
                     .padding(.top)
-                    ScrollView(.horizontal, showsIndicators: false){
-                        HStack{
-                            ForEach(viewModel.fetProducts(filter: .isFeatured)){
-                                product in
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(viewModel.fetchProducts(filter: .isFeatured)) { product in
                                 ProductRow(product: product)
-                            }}
+                            }
+                        }
                     }
-                    .padding(.leading,5)
+                    .padding(.leading, 5)
                     HStack{
                         Text("Highly Rated")
                             .font(.system(size: 15, weight: .semibold))
@@ -83,14 +87,14 @@ struct HomeView: View {
                         }
                     }
                     .padding(.top)
-                    ScrollView(.horizontal, showsIndicators: false){
-                        HStack{
-                            ForEach(viewModel.fetProducts(filter: .highlyRated)){
-                                product in
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(viewModel.fetchProducts(filter: .highlyRated)) { product in
                                 ProductRow(product: product)
-                            }}
+                            }
+                        }
                     }
-                    .padding(.leading,5)
+                    .padding(.leading, 5)
                     Button(action: {
                         viewModel.showAllProduct = true
                     }, label: {
@@ -112,4 +116,6 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environment(CartManager())
+        .environment(TabManager())
 }
